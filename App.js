@@ -1,18 +1,50 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
+import { AppLoading } from 'expo';
 import { StyleSheet, View } from 'react-native';
-import { Container, Text, Header } from 'native-base';
+import * as Font from 'expo-font';
+import { Ionicons } from '@expo/vector-icons';
+// react navigation
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-export default function App() {
+// Screens
+import IndexScreen from './src/screens/IndexScreens';
+
+// context
+import { Provider as BlogProvider } from './src/context/BlogContext';
+
+const App = () => {
+	const [isReady, setIsReady] = useState(false);
+
+	const IndexStack = createStackNavigator();
+
+	useEffect(() => {
+		console.log('hi');
+		async function LoadFonts() {
+			await Font.loadAsync({
+				Roboto: require('native-base/Fonts/Roboto.ttf'),
+				Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+				...Ionicons.font,
+			});
+			setIsReady(true);
+		}
+
+		LoadFonts();
+	}, []);
+
+	//render
+	if (!isReady) {
+		return <AppLoading />;
+	}
 	return (
-		<Container>
-			<Header>
-				<Text>Header Text</Text>
-			</Header>
-			<Text>Open up App.js to start working on your app!</Text>
-		</Container>
+		<NavigationContainer>
+			<IndexStack.Navigator>
+				<IndexStack.Screen name="Index" component={IndexScreen} options={{ title: 'Blog' }} />
+			</IndexStack.Navigator>
+		</NavigationContainer>
 	);
-}
+};
 
 const styles = StyleSheet.create({
 	container: {
@@ -22,3 +54,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 });
+
+export default () => {
+	return (
+		<BlogProvider>
+			<App />
+		</BlogProvider>
+	);
+};
