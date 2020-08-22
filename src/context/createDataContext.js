@@ -16,7 +16,7 @@ export default (reducer, actions, initialState) => {
 		}
 		return (
 			<Context.Provider value={{ state, ...boundActions }}>
-				<Container>{children}</Container>
+				<Contanpm iner>{children}</Contanpm>
 			</Context.Provider>
 		);
 	};

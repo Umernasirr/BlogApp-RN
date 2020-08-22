@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Context as BlogContext } from '../context/BlogContext';
 import { Container, Header, Content, List, ListItem, Text, Button, Icon } from 'native-base';
 const IndexScreen = () => {
-	const { state, addBlogPost } = useContext(BlogContext);
+	const { state, addBlogPost, deleteBlogPost } = useContext(BlogContext);
 	return (
 		<Container>
 			<Content>
@@ -17,7 +17,7 @@ const IndexScreen = () => {
 							</Text>
 
 							<Text style={{ textAlign: 'right', flex: 1 }}>
-								<Icon name="trash" />
+								<Icon onPress={() => deleteBlogPost(post.id)} name="trash" />
 							</Text>
 						</ListItem>
 					))}
